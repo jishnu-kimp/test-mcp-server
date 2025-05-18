@@ -2,7 +2,7 @@
 
 A modular Node.js server that exposes both OKX cryptocurrency market data (price, candlesticks,
 etc.) and business analytics tools (sales, revenue by region, etc.) as Model Context Protocol (MCP)
-tools. Built with TypeScript for maintainability, scalability, and team collaboration.
+tools.
 
 ---
 
