@@ -1,0 +1,10 @@
+{
+    "mcpServers": {
+        "okx": {
+            "command": "node",
+            "args": ["./build/index.js"],
+            "disabled": false,
+            "autoApprove": ["get_price", "get_candlesticks"]
+        }
+    }
+}

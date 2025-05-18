@@ -1,0 +1,7 @@
+/build
+/node_modules
+/dist
+/coverage
+/logs
+/tmp
+/cache
