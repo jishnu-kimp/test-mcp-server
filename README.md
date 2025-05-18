@@ -1,18 +1,21 @@
-# OKR MCP Server
+# Test MCP Server
 
-A modular Node.js server that exposes OKX cryptocurrency market data (price, candlesticks, etc.) as
-Model Context Protocol (MCP) tools. Built with TypeScript and designed for maintainability,
-scalability, and team collaboration.
+A modular Node.js server that exposes both OKX cryptocurrency market data (price, candlesticks,
+etc.) and business analytics tools (sales, revenue by region, etc.) as Model Context Protocol (MCP)
+tools. Built with TypeScript for maintainability, scalability, and team collaboration.
 
 ---
 
 ## Features
 
--   **MCP Tool Server:** Exposes OKX market data as MCP tools.
--   **Get Latest Price:** Fetch the latest price, bid, ask, 24h high/low, and volume for any OKX
-    instrument.
--   **Get Candlestick Data:** Retrieve historical candlestick data for any OKX instrument and
-    interval.
+-   **MCP Tool Server:** Exposes both OKX market data and business analytics as MCP tools.
+-   **Cryptocurrency Data:**
+    -   Get latest price, bid, ask, 24h high/low, and volume for any OKX instrument.
+    -   Retrieve historical candlestick data for any OKX instrument and interval.
+-   **Business Analytics:**
+    -   Get total sales revenue.
+    -   Get sales sum grouped by region.
+    -   Compare sales performance across regions.
 -   **Modular Structure:** Clean separation of API, handlers, types, and server logic.
 -   **TypeScript:** Full type safety and modern development experience.
 
@@ -22,14 +25,10 @@ scalability, and team collaboration.
 
 ```
 src/
-  api/
-    okxApi.ts           # Handles OKX API requests
-  handlers/
-    toolHandlers.ts     # MCP tool handler logic
-  server/
-    okxServer.ts        # OKXServer class, server setup
-  types/
-    okxTypes.ts         # TypeScript interfaces for OKX API
+  api/                  # Handles OKX and business analytics API requests
+  handlers/             # MCP tool handler logic
+  server/               # Server setup and logic
+  types/                # TypeScript interfaces for APIs
   main.ts               # Entry point, starts the server
 ```
 
@@ -40,15 +39,15 @@ src/
 ### Prerequisites
 
 -   Node.js (v18+ recommended)
--   pnpm (or npm/yarn)
+-   npm, pnpm, or yarn
 -   OKX public API (no key required for public endpoints)
 
 ### Installation
 
 ```bash
-pnpm install
-# or
 npm install
+# or
+pnpm install
 # or
 yarn install
 ```
@@ -56,9 +55,9 @@ yarn install
 ### Build
 
 ```bash
-pnpm run build
-# or
 npm run build
+# or
+pnpm run build
 # or
 yarn build
 ```
@@ -66,9 +65,9 @@ yarn build
 ### Run
 
 ```bash
-pnpm start
-# or
 npm start
+# or
+pnpm start
 # or
 yarn start
 ```
@@ -79,7 +78,9 @@ yarn start
 
 The server runs as an MCP tool server over stdio. It exposes the following tools:
 
-### 1. `get_price`
+### Cryptocurrency Market Data Tools
+
+#### 1. `get_price`
 
 Fetch the latest price and market data for a given OKX instrument.
 
@@ -106,7 +107,7 @@ Fetch the latest price and market data for a given OKX instrument.
 }
 ```
 
-### 2. `get_candlesticks`
+#### 2. `get_candlesticks`
 
 Fetch historical candlestick data for a given OKX instrument and interval.
 
@@ -120,17 +121,55 @@ Fetch historical candlestick data for a given OKX instrument and interval.
 }
 ```
 
-**Output:**  
-An array of candlestick objects with open, high, low, close, volume, and timestamp.
+**Output:** An array of candlestick objects with open, high, low, close, volume, and timestamp.
+
+### Business Analytics Tools
+
+#### 3. `get_total_revenue`
+
+Fetch the total sales revenue.
+
+**Output:**
+
+```json
+{
+    "totalRevenue": 1234.56
+}
+```
+
+#### 4. `get_sales_by_region`
+
+Fetch the sales sum for a specific region.
+
+**Input:**
+
+```json
+{
+    "region": "North"
+}
+```
+
+**Output:**
+
+```json
+{
+    "region": "North",
+    "revenue": 120.5
+}
+```
+
+#### 5. Regional Sales Comparison
+
+You can compare sales across different regions to identify the best-performing area.
 
 ---
 
 ## Development
 
--   **API Layer:** All OKX API calls are in `src/api/okxApi.ts`.
--   **Handlers:** MCP tool logic is in `src/handlers/toolHandlers.ts`.
--   **Types:** OKX API response types are in `src/types/okxTypes.ts`.
--   **Server:** MCP server setup is in `src/server/okxServer.ts`.
+-   **API Layer:** All OKX and business analytics API calls are in `src/api/`.
+-   **Handlers:** MCP tool logic is in `src/handlers/`.
+-   **Types:** API response types are in `src/types/`.
+-   **Server:** MCP server setup is in `src/server/`.
 -   **Entry Point:** Start the server with `src/main.ts`.
 
 ---
