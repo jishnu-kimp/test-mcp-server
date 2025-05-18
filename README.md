@@ -163,5 +163,3 @@ ISC
 -   [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol)
 
 ---
-
-Let me know if you want to customize any section or add usage examples for specific clients!
