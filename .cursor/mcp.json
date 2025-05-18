@@ -1,10 +1,15 @@
 {
     "mcpServers": {
-        "okx": {
+        "test": {
             "command": "node",
-            "args": ["./build/index.js"],
+            "args": ["./build/main.js"],
             "disabled": false,
-            "autoApprove": ["get_price", "get_candlesticks"]
+            "autoApprove": [
+                "get_price",
+                "get_candlesticks",
+                "get_total_revenue",
+                "get_sales_by_region"
+            ]
         }
     }
 }

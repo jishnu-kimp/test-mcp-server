@@ -1,4 +1,4 @@
-import OKXServer from './server/okxServer.js';
+import MCPServer from './server';
 
-const server = new OKXServer();
+const server = new MCPServer();
 server.run().catch(console.error);

@@ -7,15 +7,22 @@
         "build": "tsc",
         "start": "node build/main.js"
     },
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@modelcontextprotocol/sdk": "^1.11.4",
-        "axios": "^1.9.0"
+        "@prisma/client": "^6.8.2",
+        "axios": "^1.9.0",
+        "dotenv": "^16.5.0",
+        "prisma": "^6.8.2"
     },
     "devDependencies": {
         "@types/node": "^22.15.18",
+        "ts-node": "^10.9.2",
         "typescript": "^5.8.3"
     }
 }

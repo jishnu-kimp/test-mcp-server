@@ -7,15 +7,18 @@ import {
     McpError
 } from '@modelcontextprotocol/sdk/types.js';
 import { handleGetPrice, handleGetCandlesticks } from '../handlers/toolHandlers.js';
+import { PrismaClient } from "@prisma/client";
+import { DATABASE_URL } from "../env";
+const prisma = new PrismaClient();
 
-class OKXServer {
+class MCPServer {
     private server: Server;
 
     constructor() {
-        console.error('[Setup] Initializing OKX MCP server...');
+        console.error('[Setup] Initializing MCP server...');
         this.server = new Server(
             {
-                name: 'okx-mcp-server',
+                name: 'test-mcp-server',
                 version: '0.1.0',
             },
             {
@@ -73,24 +76,49 @@ class OKXServer {
                         required: ['instrument'],
                     },
                 },
+                {
+                    name: "get_total_revenue",
+                    description: "Get total sales revenue",
+                    inputSchema: { type: "object", properties: {}, required: [] },
+                },
+                {
+                    name: "get_sales_by_region",
+                    description: "Get sales sum grouped by region",
+                    inputSchema: {
+                        type: "object",
+                        properties: { region: { type: "string" } },
+                        required: ["region"],
+                    },
+                },
             ],
         }));
 
-        this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+        this.server.setRequestHandler(CallToolRequestSchema, async ({ params }) => {
             try {
-                const args = request.params.arguments as {
+
+                const args = params.arguments as {
                     instrument: string;
                     bar?: string;
                     limit?: number;
+                    region?: string;
                 };
-                if (request.params.name === 'get_price') {
+
+                if (params.name === 'get_price') {
                     return await handleGetPrice(args);
-                } else if (request.params.name === 'get_candlesticks') {
+                } else if (params.name === 'get_candlesticks') {
                     return await handleGetCandlesticks(args);
-                } else {
+                } else if (params.name === "get_total_revenue") {
+                    const { _sum } = await prisma.sale.aggregate({ _sum: { amount: true } });
+                    return { content: [{ type: "text", text: `Total Revenue: ${_sum?.amount ?? 0}` }] };
+                } else if (params.name === "get_sales_by_region") {
+                    const data = await prisma.sale.findMany({ where: { region: args.region } });
+                    const total = data.reduce((s, row) => s + row.amount, 0);
+                    return { content: [{ type: "text", text: `Revenue in ${args.region}: ${total}` }] };
+                }
+                else {
                     throw new McpError(
                         ErrorCode.MethodNotFound,
-                        `Unknown tool: ${request.params.name}`
+                        `Unknown tool: ${params.name}`
                     );
                 }
             } catch (error: unknown) {
@@ -109,8 +137,8 @@ class OKXServer {
     async run() {
         const transport = new StdioServerTransport();
         await this.server.connect(transport);
-        console.error('OKX MCP server running on stdio');
+        console.error('MCP server running on stdio');
     }
 }
 
-export default OKXServer; 
+export default MCPServer; 

@@ -1,0 +1,21 @@
+services:
+    db:
+        image: postgres:15
+        container_name: test-mcp-postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${DB_USER:-test_mcp}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-test_mcp_pass}
+            POSTGRES_DB: ${DB_NAME:-test_mcp_db}
+        ports:
+            - "5432:5432"
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+volumes:
+    db-data:
