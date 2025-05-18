@@ -16,8 +16,6 @@ tools.
     -   Get total sales revenue.
     -   Get sales sum grouped by region.
     -   Compare sales performance across regions.
--   **Modular Structure:** Clean separation of API, handlers, types, and server logic.
--   **TypeScript:** Full type safety and modern development experience.
 
 ---
 
